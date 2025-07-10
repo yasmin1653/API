@@ -1,42 +1,30 @@
 const express = require('express');
 const app = express();
 
-const calculadoraIMC = require("./calculadoraIMC");
+const calculadoraIMC = require("./servico/calculadoraIMC");
 
 app.get('/',(req, res) => {
     let peso = req.query.peso;
     let altura = req.query.altura;
 
-    let imc = calculadoraIMC.efetuarCalculoIMC(peso, altura);
+    if(calculadoraIMC.validaParametro(req.query.peso) && calculadoraIMC.validaParametro(req.query.altura))
+    {
+        let imc = calculadoraIMC.efetuarCalculoIMC(peso, altura);
+        let status = calculadoraIMC.retornaStatusIMC(imc);
 
-    res.json({imc: imc});
+        let json = {imc: imc, status: status};
+
+        res.json(json);
+    }
+    else
+    {
+        res.status(400).json({'Erro':'Peso ou altura inválidos.'});
+    }
+    
 });
+
 
 app.listen(8080, () => {
     let data = new Data();
     console.log("Servidor node iniciado em: " + data);
 })
-
-
-
-
-// AULA DO DIA 3 DE JULHO
-
-import express from 'express';
-
-const app = express();
-
-app.get('/', (req, res) =>  {
-    res.json({mensagem: "API de fato histórico"});
-});
-
-app.listen(8080, () => {
-    console.log("Servidor iniciado na porta 8080");
-});
-
-
-
-function sevicoBuscarFatoPorAno (ano)
-{
-    return ano;
-}

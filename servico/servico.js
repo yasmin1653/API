@@ -4,7 +4,7 @@ import {sevicoBuscarFatoPorAno} from './servico/servico.js';
 const app = express();
 
 app.get('/', (req, res) => {
-    
+
     let anoFato = req.query.ano;
 
     var fato = sevicoBuscarFatoPorAno(anoFato);
